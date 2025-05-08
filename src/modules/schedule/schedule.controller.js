@@ -5,7 +5,6 @@ import { getSchedule } from "./schedule.service.js"
 import { convertHour } from "../../helper/convert-hour.js";
 
 const router = express.Router();
-const jobs = [];
 
 export const scheduleTask = async () => {
     try {
@@ -22,10 +21,7 @@ export const scheduleTask = async () => {
 
         console.log(`Current Time: ${nowCronExpression}`);
 
-        jobs.forEach(job => {
-            console.log(`Stopping job: ${job}`);
-            job.stop();
-        })
+        cron.getTasks().clear();
 
         schedule.schedules.forEach(schedule => {
             // Ambil waktu mulai (start) dan ubah ke format cron yang sesuai
@@ -35,14 +31,11 @@ export const scheduleTask = async () => {
 
 
             // Buat cron job berdasarkan cronExpression
-            const job = cron.schedule(cronExpression, async () => {
+            cron.schedule(cronExpression, async () => {
                 console.log(`[${cronExpression}] : Sending Message: ${schedule.task}`);
                 const message = `*REMINDER*\n\n[${schedule.start}]\n${schedule.task}`
                 await sendWhatsapp(message);
             });
-
-            // Tambahkan job ke array jobs
-            jobs.push(job);
         });
     } catch (error) {
         console.error("Error in schedule task:", error);
