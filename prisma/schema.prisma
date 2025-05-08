@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Switch {
+  id Int @id @default(autoincrement())
+
+  modeId Int
+  mode   Mode @relation(fields: [modeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Mode {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  schedules Schedule[]
+  switchs   Switch[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Schedule {
+  id    Int    @id @default(autoincrement())
+  start String
+  end   String
+  task  String
+
+  modeId Int
+  mode   Mode @relation(fields: [modeId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
