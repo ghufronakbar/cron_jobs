@@ -44,6 +44,7 @@ export const scheduleTask = async () => {
             // Simpan cron job yang dijadwalkan
             scheduledJobs.push(job);
         });
+        return schedule
     } catch (error) {
         console.error("Error in schedule task:", error);
     }
@@ -58,8 +59,12 @@ router.post("/webhook", async (req, res) => {
         if (sender === "6285156031385" || sender === "085156031385") {
             if (message) {
                 if (message.includes("REFRESH")) {
-                    await scheduleTask();
-                    await sendWhatsapp("Refreshed schedule");
+                    const schedule = await scheduleTask();
+                    const tableSchedule = schedule.schedules.map((schedule) => {
+                        const { start, end, task } = schedule;
+                        return `*${start} - ${end}* ${task}\n`;
+                    })
+                    await sendWhatsapp(`Refreshed schedule mode ${schedule.name}\n\n${tableSchedule.join("")}`);
                 } else if (message.includes("MODE:")) {
                     const mode = message.split(":")[1].trim();
                     try {
