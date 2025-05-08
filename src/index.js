@@ -19,10 +19,10 @@ app.use(cors());
 // ROUTES
 app.use('/api/schedule', schedule);
 
+scheduleTask();
 async function main() {
-    app.listen(PORT, async () => {
+    app.listen(PORT, () => {
         console.log('Starting server... in port', PORT);
-        await scheduleTask();
         console.log('Server started successfully!');
         console.log(BASE_URL);
     })
