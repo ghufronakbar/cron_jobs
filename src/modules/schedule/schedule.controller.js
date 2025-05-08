@@ -1,7 +1,7 @@
 import express from "express";
 import cron from "node-cron";
 import { sendWhatsapp } from "../../lib/whatsapp.js";
-import { getSchedule, switchMode } from "./schedule.service.js";
+import { getAllModes, getSchedule, switchMode } from "./schedule.service.js";
 import { convertHour } from "../../helper/convert-hour.js";
 
 const router = express.Router();
@@ -62,16 +62,23 @@ router.post("/webhook", async (req, res) => {
                     const schedule = await scheduleTask();
                     const tableSchedule = schedule.schedules.map((schedule) => {
                         const { start, end, task } = schedule;
-                        return `*${start} - ${end}*\n${task}\n`;
+                        return `*${start} - ${end}*\n${task}\n\n`;
                     })
                     await sendWhatsapp(`*Refreshed schedule mode ${schedule.name}*\n\n${tableSchedule.join("")}`);
+                } else if (message.includes("HELP")) {
+                    const modes = await getAllModes();
+                    const tableMode = modes.map((mode) => {
+                        return `*${mode.name}*\n${mode.description}\n\n`;
+                    })
+                    const howToMessage = `*HOW TO USE*\n\nSend *MODE:* followed by the mode you want to switch to.\n\n*AVAILABLE MODES*\n\n${tableMode.join("")}`;
+                    await sendWhatsapp(howToMessage);
                 } else if (message.includes("MODE:")) {
                     const mode = message.split(":")[1].trim();
                     try {
                         const switchData = await switchMode(mode);
                         const tableSchedule = switchData.schedules.map((schedule) => {
                             const { start, end, task } = schedule;
-                            return `*${start} - ${end}*\n${task}\n`;
+                            return `*${start} - ${end}*\n${task}\n\n`;
                         })
                         await scheduleTask();
                         await sendWhatsapp(`*Switched schedule mode to ${mode}*\n\n${tableSchedule.join("")}`);

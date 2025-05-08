@@ -64,3 +64,13 @@ export const switchMode = async (name) => {
         throw error;
     }
 }
+
+export const getAllModes = async () => {
+    try {
+        const modes = await db.mode.findMany();
+        return modes;
+    } catch (error) {
+        console.error("Error fetching modes:", error);
+        throw error;
+    }
+}
