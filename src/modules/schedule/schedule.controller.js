@@ -62,19 +62,19 @@ router.post("/webhook", async (req, res) => {
                     const schedule = await scheduleTask();
                     const tableSchedule = schedule.schedules.map((schedule) => {
                         const { start, end, task } = schedule;
-                        return `*${start} - ${end}* ${task}\n`;
+                        return `*${start} - ${end}*\n${task}\n`;
                     })
-                    await sendWhatsapp(`Refreshed schedule mode ${schedule.name}\n\n${tableSchedule.join("")}`);
+                    await sendWhatsapp(`*Refreshed schedule mode ${schedule.name}*\n\n${tableSchedule.join("")}`);
                 } else if (message.includes("MODE:")) {
                     const mode = message.split(":")[1].trim();
                     try {
                         const switchData = await switchMode(mode);
                         const tableSchedule = switchData.schedules.map((schedule) => {
                             const { start, end, task } = schedule;
-                            return `*${start} - ${end}* ${task}\n`;
+                            return `*${start} - ${end}*\n${task}\n`;
                         })
                         await scheduleTask();
-                        await sendWhatsapp(`Refreshed schedule to ${mode}\n\n${tableSchedule.join("")}`);
+                        await sendWhatsapp(`*Switched schedule mode to ${mode}*\n\n${tableSchedule.join("")}`);
                     } catch (error) {
                         console.error("Error while setting mode:", error);
                         await sendWhatsapp(`Error while setting mode: ${error?.message || error}`);
