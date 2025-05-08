@@ -1,7 +1,8 @@
+import express from "express";
+import cron from "node-cron"
 import { sendWhatsapp } from "../../lib/whatsapp.js";
 import { getSchedule } from "./schedule.service.js"
-import cron from "node-cron"
-import express from "express";
+import { convertHour } from "../../helper/convert-hour.js";
 
 const router = express.Router();
 const jobs = [];
@@ -29,7 +30,7 @@ export const scheduleTask = async () => {
         schedule.schedules.forEach(schedule => {
             // Ambil waktu mulai (start) dan ubah ke format cron yang sesuai
             const [startHour, startMinute] = schedule.start.split(':');
-            const cronExpression = `${startMinute} ${startHour} * * *`;
+            const cronExpression = `${startMinute} ${convertHour(startHour)} * * *`;
             console.log(`[${cronExpression}] : ${schedule.task}`);
 
 
