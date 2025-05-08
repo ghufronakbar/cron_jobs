@@ -8,6 +8,9 @@ const router = express.Router();
 
 export const scheduleTask = async () => {
     try {
+        cron.schedule('* * * * *', async () => {
+            console.log('[DEBUG] - Cron job running');
+        })
         const schedule = await getSchedule()
         if (!schedule) {
             console.log("No schedule found");
