@@ -49,7 +49,7 @@ export const scheduleTask = async () => {
     }
 }
 
-router.post("/", async (req, res) => {
+router.post("/webhook", async (req, res) => {
     try {
         console.log("Received schedule request");
         console.log(req.body);
