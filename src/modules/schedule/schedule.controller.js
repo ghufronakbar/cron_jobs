@@ -18,9 +18,9 @@ export const scheduleTask = async () => {
         const now = new Date();
         const nowHour = `0${now.getHours()}`.slice(-2);
         const nowMinute = `0${now.getMinutes()}`.slice(-2);
-        const nowCronExpression = `${nowMinute} ${nowHour} * * *`;
+        const nowCronExpression = `${nowMinute} ${convertHour(nowHour)} * * *`;
 
-        console.log(`Current Time: ${convertHour(nowCronExpression)}`);
+        console.log(`Current Time: ${nowCronExpression}`);
 
         jobs.forEach(job => {
             console.log(`Stopping job: ${job}`);
