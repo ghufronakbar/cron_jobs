@@ -6,6 +6,7 @@ import bodyParser from 'body-parser';
 import morgan from 'morgan';
 import cors from 'cors';
 import { BASE_URL, PORT } from './constants/index.js';
+import { testDb } from './lib/db.js';
 
 
 const app = express();
@@ -21,6 +22,7 @@ app.use('/api/schedule', schedule);
 
 scheduleTask();
 async function main() {
+    testDb();
     app.listen(PORT, () => {
         console.log('Starting server... in port', PORT);
         console.log('Server started successfully!');
