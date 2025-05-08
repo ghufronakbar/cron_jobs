@@ -40,17 +40,25 @@ export const switchMode = async (name) => {
                     contains: name,
                     mode: "insensitive"
                 }
+            },
+            include: {
+                schedules: {
+                    orderBy: {
+                        start: "asc"
+                    }
+                }
             }
         })
         if (!mode) {
             throw new Error("No mode data found");
         }
-        const switchData = await db.switch.create({
+        await db.switch.create({
             data: {
                 modeId: mode.id
             }
         })
-        return switchData;
+
+        return mode;
     } catch (error) {
         console.error("Error switching mode:", error);
         throw error;
