@@ -63,3 +63,5 @@ router.get("/schedule", async (req, res) => {
     await scheduleTask();
     return res.status(200).json({ status: 200, message: "Success refreshing schedule" });
 })
+
+export default router
