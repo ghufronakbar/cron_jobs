@@ -90,6 +90,15 @@ router.post("/webhook", async (req, res) => {
     }
 });
 
+router.get("/webhook", async (req, res) => {
+    try {
+        return res.status(200).json({ status: 200, message: "Success testing webhook", req });
+    } catch (error) {
+        console.error("Error in schedule task:", error);
+        return res.status(500).json({ status: 500, message: "Success refreshing schedule" });
+    }
+})
+
 router.get("/", async (req, res) => {
     await scheduleTask();
     return res.status(200).json({ status: 200, message: "Success refreshing schedule" });
