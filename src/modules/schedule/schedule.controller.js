@@ -6,6 +6,10 @@ import { convertHour } from "../../helper/convert-hour.js";
 
 const router = express.Router();
 
+cron.schedule('* * * * *', async () => {
+    console.log('[DEBUG GLOBAL CRON] - Cron job running');
+})
+
 export const scheduleTask = async () => {
     try {
         cron.schedule('* * * * *', async () => {
