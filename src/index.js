@@ -19,12 +19,6 @@ app.use(cors());
 // ROUTES
 app.use('/api/schedule', schedule);
 
-import cron from 'node-cron';
-
-cron.schedule('* * * * *', async () => {
-    console.log('[DEBUG ENTRY CRON] - Cron job running');
-})
-
 scheduleTask();
 async function main() {
     app.listen(PORT, () => {
