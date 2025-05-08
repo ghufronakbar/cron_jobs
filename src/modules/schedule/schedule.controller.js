@@ -46,7 +46,32 @@ router.post("/webhook", async (req, res) => {
     try {
         console.log("Received schedule request");
         console.log(req.body);
-        return res.status(200).json({ status: 200, message: "Success" });
+        return res.status(200).json({
+            status: 200, message: "Success", req: {
+                body: req.body,
+                query: req.query,
+                params: req.params,
+                headers: req.headers
+            }
+        });
+    } catch (error) {
+        console.error("Error in schedule task:", error);
+        await sendWhatsapp(`Error in schedule task: ${error}`);
+    }
+})
+
+router.get("/webhook", async (req, res) => {
+    try {
+        console.log("Received schedule request");
+        console.log(req.body);
+        return res.status(200).json({
+            status: 200, message: "Success", req: {
+                body: req.body,
+                query: req.query,
+                params: req.params,
+                headers: req.headers
+            }
+        });
     } catch (error) {
         console.error("Error in schedule task:", error);
         await sendWhatsapp(`Error in schedule task: ${error}`);
