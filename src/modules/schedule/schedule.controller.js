@@ -58,3 +58,8 @@ router.post("/schedule", async (req, res) => {
         await sendWhatsapp(`Error in schedule task: ${error}`);
     }
 })
+
+router.get("/schedule", async (req, res) => {
+    await scheduleTask();
+    return res.status(200).json({ status: 200, message: "Success refreshing schedule" });
+})
