@@ -21,8 +21,8 @@ app.use(cors());
 app.use('/api/schedule', schedule);
 
 scheduleTask();
+testDb();
 async function main() {
-    testDb();
     app.listen(PORT, () => {
         console.log('Starting server... in port', PORT);
         console.log('Server started successfully!');
