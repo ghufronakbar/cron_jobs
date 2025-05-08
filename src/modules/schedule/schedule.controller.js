@@ -48,7 +48,7 @@ export const scheduleTask = async () => {
     }
 }
 
-router.post("/schedule", async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         console.log("Received schedule request");
         console.log(req.body);
@@ -59,7 +59,7 @@ router.post("/schedule", async (req, res) => {
     }
 })
 
-router.get("/schedule", async (req, res) => {
+router.get("/", async (req, res) => {
     await scheduleTask();
     return res.status(200).json({ status: 200, message: "Success refreshing schedule" });
 })
