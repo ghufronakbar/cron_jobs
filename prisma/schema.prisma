@@ -18,8 +18,9 @@ model Switch {
 }
 
 model Mode {
-  id   Int    @id @default(autoincrement())
-  name String
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String @default("") @db.Text()
 
   schedules Schedule[]
   switchs   Switch[]
